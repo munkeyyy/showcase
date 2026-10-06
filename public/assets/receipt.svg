@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="105" height="160" viewBox="0 0 105 160"><defs>
+  <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.018 0.06" numOctaves="2" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.35" xChannelSelector="R" yChannelSelector="G" result="disp"/>
+    <feDropShadow dx="1.8" dy="2.6" stdDeviation="2.4" flood-color="#584f40" flood-opacity="0.26"/>
+  </filter>
+  <filter id="paper" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="3" seed="3" result="n"/>
+    <feBlend in="SourceGraphic" in2="n" mode="multiply"/>
+  </filter>
+</defs>
+<g filter="url(#rough)" transform="rotate(7 52 80)">
+ <path d="M18 8 L88 15 L82 141 L72 146 L62 141 L51 146 L40 141 L28 145 L14 138Z" fill="#c8bbb5" stroke="#94867f" stroke-width="1.5"/>
+ <text x="31" y="45" font-family="Arial" font-size="22" font-weight="700" fill="#373733">F1</text>
+ <path d="M31 58 L70 62 M30 69 L65 72 M29 79 L70 83" stroke="#777168" stroke-width="2" opacity=".5"/>
+ <rect x="48" y="88" width="10" height="38" fill="#9e8978" transform="rotate(9 53 107)"/>
+</g></svg>

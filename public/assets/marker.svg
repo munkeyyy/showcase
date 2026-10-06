@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="165" viewBox="0 0 60 165"><defs>
+  <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.018 0.06" numOctaves="2" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.35" xChannelSelector="R" yChannelSelector="G" result="disp"/>
+    <feDropShadow dx="1.8" dy="2.6" stdDeviation="2.4" flood-color="#584f40" flood-opacity="0.26"/>
+  </filter>
+  <filter id="paper" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="3" seed="3" result="n"/>
+    <feBlend in="SourceGraphic" in2="n" mode="multiply"/>
+  </filter>
+</defs>
+<g filter="url(#rough)" transform="rotate(-10 30 82)">
+ <path d="M19 23 L40 21 L42 132 L20 134Z" fill="#b4b3a8" stroke="#6b6b64" stroke-width="1.4"/>
+ <rect x="21" y="45" width="18" height="55" fill="#8d8f86" opacity=".4"/>
+ <path d="M19 23 L40 21 L38 8 L22 9Z" fill="#242521"/>
+ <path d="M20 134 L42 132 L40 154 L24 155Z" fill="#6e6c65"/>
+ <path d="M23 66 L37 63 M23 72 L37 69 M24 78 L36 75" stroke="#53534f"/>
+</g></svg>

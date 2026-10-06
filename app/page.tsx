@@ -45,7 +45,7 @@ export default function Page(){
      {isPhone(view)&&<PhonePage view={view} onBack={home} exitRef={phoneExit}/>}
    </section>
    <Preloader onDone={()=>setReady(true)}/>
-   <Walker say={!ready?'loading':view==='home'&&!scrolled?'scroll':''} rest={scrolled}/>
+   <Walker say={!ready?'loading':view==='home'&&!scrolled?'scroll':''} rest={scrolled} arrows={view!=='work'}/>
  </main>
  </>
 }

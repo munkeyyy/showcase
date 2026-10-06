@@ -60,9 +60,9 @@ export function useDeskArrangements(root:RefObject<HTMLElement>,active:boolean,o
    if(!started&&lenis.velocity!==0){started=true;el.setAttribute('data-scrubbing','');onFirstScroll?.()} // also fades the walker's 'scroll' bubble (CSS)
    render();
   });
-  // one arrangement per key press, eased by Lenis like a wheel scroll
+  // one arrangement per key press, eased by Lenis like a wheel scroll (Space is the walker's jump)
   const keys=(e:KeyboardEvent)=>{
-   const d=['ArrowDown','PageDown',' '].includes(e.key)?1:['ArrowUp','PageUp'].includes(e.key)?-1:0;
+   const d=['ArrowDown','PageDown'].includes(e.key)?1:['ArrowUp','PageUp'].includes(e.key)?-1:0;
    if(!d)return;
    e.preventDefault();
    lenis.scrollTo(lenis.targetScroll+d*LOOP_PX/3,{duration:1.1});

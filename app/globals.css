@@ -243,26 +243,28 @@ html.lenis {
 }
 
 .navpill.back {
-    animation: backPillIn .36s cubic-bezier(.22, 1, .36, 1) .16s both
+    /* backwards (not both): once in, the animation lets go so the leave fade can transition */
+    animation: backPillIn .36s cubic-bezier(.22, 1, .36, 1) .16s backwards;
+    transition: background-color .2s ease, opacity .3s ease
 }
 
+/* fades out as the page goes back home */
+.leaving .navpill.back {
+    opacity: 0
+}
+
+/* resting tilt; the hover spring (Nav.tsx BackPill) straightens it with GSAP */
 .back-arrow {
     width: 26px;
     height: 21px;
     stroke-width: 3.4;
-    rotate: 13deg;
-    transition: translate .25s cubic-bezier(.22, 1, .36, 1), rotate .25s cubic-bezier(.22, 1, .36, 1)
-}
-
-.navpill.back:hover .back-arrow {
-    translate: -3px 0;
-    rotate: 4deg
+    transform: rotate(13deg)
 }
 
 @keyframes backPillIn {
     from {
         opacity: 0;
-        transform: translateX(14px) scale(.85)
+        transform: translateX(-4px) scale(.98)
     }
 }
 
@@ -437,8 +439,8 @@ html.lenis {
 .walker {
     position: absolute;
     left: clamp(16px, 2.6vw, 40px);
-    bottom: 8px;
-    width: 46px;
+    bottom: 6px;
+    width: 56px;
     z-index: 40;
     pointer-events: none
 }
@@ -447,7 +449,14 @@ html.lenis {
     z-index: 100
 }
 
-/* travel corner → wall → corner at a fixed px/s (Walker.tsx sets --walk-x/--walk-t), turning round at each end */
+/*
+ States (Walker.tsx):
+   is-walking    pacing corner → wall → corner on its own (CSS animation)
+   is-returning  heading back to the corner after the first scroll
+   is-standing   parked in the corner
+   is-control    driven by the keyboard (A/D or ←/→ walk, W/Space jump); JS sets the transform
+                 + is-moving (walking), is-air (jumping), sf-left (facing left)
+*/
 .walker.is-walking {
     animation: walkerTravel var(--walk-t, 20s) linear infinite alternate
 }
@@ -477,15 +486,14 @@ html.lenis {
     width: 100%;
     overflow: visible;
     fill: none;
-    stroke: #3b3c38;
-    stroke-width: 1.6;
+    stroke: #34352f;
+    stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round
 }
 
-/* flipbook: 8 frames, one visible at a time, ~10fps */
-/* --step = one 8-frame cycle; Walker.tsx scales it with the travel speed so feet never skate */
-.walker-face path:not(.walker-stand) {
+/* flipbook: 8 frames, one visible at a time. --step = one cycle; Walker.tsx scales it with the speed so feet don't skate */
+.walker-frame {
     opacity: 0;
     animation: walkerFrame var(--step, .76s) steps(1) infinite;
     animation-delay: calc(var(--i)*var(--step, .76s)/8 - var(--step, .76s))
@@ -501,37 +509,43 @@ html.lenis {
     }
 }
 
-/* before JS kicks in: one still frame */
-.walker:not(.is-walking):not(.is-returning):not(.is-standing) .walker-face path {
-    animation: none
-}
-
-.walker:not(.is-walking):not(.is-returning):not(.is-standing) .walker-face path:nth-child(3) {
-    opacity: 1
-}
-
-/* once the visitor scrolls: turn round, hurry back to the corner (frames sped up to match), then stand still */
-.walker-stand {
+.walker-stand,
+.walker-jump {
     opacity: 0
 }
 
-.walker.is-returning .walker-face {
-    transform: scaleX(-1)
-}
-
-.walker.is-standing .walker-face path {
+/* before JS kicks in: just stand there */
+.walker:not(.is-walking):not(.is-returning):not(.is-control) .walker-frame,
+.walker.is-standing .walker-frame,
+.walker.is-control:not(.is-moving) .walker-frame,
+.walker.is-control.is-air .walker-frame {
     animation: none;
     opacity: 0
 }
 
-.walker.is-standing .walker-face .walker-stand {
+.walker:not(.is-walking):not(.is-returning):not(.is-control) .walker-stand,
+.walker.is-control:not(.is-moving):not(.is-air) .walker-stand {
     opacity: 1
+}
+
+.walker.is-control.is-air .walker-jump {
+    opacity: 1
+}
+
+/* faster legs when the keyboard is driving (matches the 320px/s walk) */
+.walker.is-control {
+    --step: .56s
+}
+
+.walker.is-returning .walker-face,
+.walker.is-control.sf-left .walker-face {
+    transform: scaleX(-1)
 }
 
 .walker-bubble {
     position: absolute;
-    left: 24px;
-    bottom: 70px;
+    left: 30px;
+    bottom: 84px;
     width: 92px;
     height: 46px;
     animation: inkIn .4s ease both
@@ -576,11 +590,12 @@ html.lenis {
         animation: none
     }
 
-    .walker .walker-face path {
-        animation: none
+    .walker .walker-frame {
+        animation: none;
+        opacity: 0
     }
 
-    .walker .walker-face path:nth-child(3) {
+    .walker:not(.is-air) .walker-stand {
         opacity: 1
     }
 }
@@ -1485,6 +1500,11 @@ html.lenis {
     }
 
     .walker {
-        width: 40px
+        width: 46px
+    }
+
+    .walker-bubble {
+        bottom: 70px;
+        left: 24px
     }
 }

@@ -44,10 +44,17 @@ export function Heart(){
  </svg>;
 }
 
-// a loop-de-loop arrow pointing back
+/*
+ A loop-de-loop arrow pointing back. On hover it springs out straight (Nav.tsx morphs between these),
+ so both shapes use the same commands and the same number of points.
+*/
+export const BACK_ARROW={
+ curled:{shaft:'M43 12 C52 24 39 37 30 30 C23 24.5 32 13.5 37 19.5 C42 26 29 32 19 27.6 C13.5 25.2 9.6 22.6 5.8 20.6',head:'M12.6 14.4 L5.4 20.4 L13.6 25.4'},
+ straight:{shaft:'M45 20.4 C41.6 20.2 38.3 20.6 35 20.4 C31.6 20.2 28.4 20.7 25 20.5 C21.6 20.3 18.4 20.6 15 20.4 C11.6 20.2 8.4 20.5 5 20.4',head:'M11.8 14.6 L4.8 20.4 L11.8 26.2'}
+};
 export function BackArrow(){
  return <svg className="back-arrow" viewBox="0 0 48 40" aria-hidden="true">
-  <path d="M43 12 C52 24 39 37 30 30 C23 24.5 32 13.5 37 19.5 C42 26 29 32 19 27.6 C13.5 25.2 9.6 22.6 5.8 20.6"/>
-  <path d="M12.6 14.4 L5.4 20.4 L13.6 25.4"/>
+  <path className="shaft" d={BACK_ARROW.curled.shaft}/>
+  <path className="head" d={BACK_ARROW.curled.head}/>
  </svg>;
 }

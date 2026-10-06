@@ -3,7 +3,7 @@ import {useEffect,useRef,useState} from 'react';
 import gsap from 'gsap';
 import {useGSAP} from '@gsap/react';
 import {owner} from '../data/content';
-import {Asterisk,BackArrow,Eyes,Hammer,Heart,InkFilter} from './NavIcons';
+import {Asterisk,BACK_ARROW,BackArrow,Eyes,Hammer,Heart,InkFilter} from './NavIcons';
 
 export type View='home'|'work'|'process'|'about'|'contact';
 
@@ -13,7 +13,7 @@ export type View='home'|'work'|'process'|'about'|'contact';
    Process  the asterisk is flung into a spin that slows down, then settles on a resting angle
    About    the pupils follow the pointer anywhere on the page
    Contact  the heart beats (lub-dub) while hovered
-   Back     pops in on inner pages with a loopy arrow
+   Back     pops in on inner pages; its loopy arrow springs out straight on hover and coils back on leave
  Small screens get a Menu toggle that slides the pills in as a drawer.
 */
 export default function Nav({view,go}:{view:View,go:(v:View)=>void}){
@@ -108,11 +108,27 @@ export default function Nav({view,go}:{view:View,go:(v:View)=>void}){
   </button>
   <div className="nav-scrim" onClick={()=>setOpen(false)} aria-hidden="true"/>
   <nav id="nav-pills" className="nav-pills" aria-label="Main">
-   {view!=='home'&&<button type="button" className="navpill back" onClick={()=>pick('home')}><span className="pill-icon"><BackArrow/></span>Back</button>}
+   {view!=='home'&&<BackPill onClick={()=>pick('home')}/>}
    {pill('work',<span className="work-word" aria-label="Work">{'Work'.split('').map((l,i)=><span className="work-letter" aria-hidden="true" key={i}>{l}</span>)}</span>,<Hammer/>)}
    {pill('process','Process',<Asterisk/>)}
    {pill('about','About',<Eyes/>)}
    {pill('contact','Contact',<Heart/>)}
   </nav>
  </header>;
+}
+
+// Back: the curl uncoils into a straight arrow with a springy overshoot, and coils up again on leave
+function BackPill({onClick}:{onClick:()=>void}){
+ const btn=useRef<HTMLButtonElement>(null);
+ const morph=(to:'curled'|'straight')=>(e:React.PointerEvent)=>{
+  if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const el=btn.current!,out=to==='straight';
+  const v={duration:out?.75:.45,ease:out?'elastic.out(1,0.45)':'power3.out',overwrite:true};
+  gsap.to(el.querySelector('.shaft'),{attr:{d:BACK_ARROW[to].shaft},...v});
+  gsap.to(el.querySelector('.head'),{attr:{d:BACK_ARROW[to].head},...v});
+  gsap.to(el.querySelector('.back-arrow'),{rotation:out?0:13,duration:out?.5:.35,ease:out?'back.out(2.5)':'power2.out',overwrite:true});
+ };
+ return <button ref={btn} type="button" className="navpill back" onClick={onClick} onPointerEnter={morph('straight')} onPointerLeave={morph('curled')}>
+  <span className="pill-icon"><BackArrow/></span>Back
+ </button>;
 }

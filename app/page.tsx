@@ -19,7 +19,7 @@ const isPhone=(v:View):v is PhoneView=>v==='about'||v==='contact';
 export default function Page(){
  const [view,setView]=useState<View>('home');
  const [transitioning,setTransitioning]=useState(false);
- const [ready,setReady]=useState(false); // preloader finished
+ const [ready,setReady]=useState(false); // preloader finishedx
  const [scrolled,setScrolled]=useState(false); // first home scroll: the walker heads back to his corner
  const canvas=useRef<HTMLElement>(null);
  const phoneExit=useRef<(()=>number)|null>(null);

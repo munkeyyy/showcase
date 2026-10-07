@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useState,type ReactNode} from 'react';
+import {asset} from '../lib/asset';
 
 const clock=()=>new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:false});
 
@@ -11,7 +12,7 @@ export default function Phone({label,children}:{label:string,children:ReactNode}
  const [time,setTime]=useState(clock);
  useEffect(()=>{const t=setInterval(()=>setTime(clock()),15000);return ()=>clearInterval(t)},[]);
  return <div className="phone">
-  <img className="phone-shell" src="/assets/contact-phone-ref.png" alt="" draggable={false}/>
+  <img className="phone-shell" src={asset("/assets/contact-phone-ref.png")} alt="" draggable={false}/>
   <div className="phone-screen" role="group" aria-label={label}>
    <div className="ios-status" aria-hidden="true">
     <b>{time}</b>

@@ -85,7 +85,6 @@ html.lenis {
     pointer-events: none;
     opacity: .17;
     mix-blend-mode: multiply;
-    background-image: url("/assets/noise.png");
     z-index: 60
 }
 

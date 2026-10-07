@@ -18,7 +18,7 @@ export default function ContactScreen({onBack}:{onBack:()=>void}){
   e.preventDefault();if(!ready||status==='sending')return;
   setStatus('sending');
   try{
-   const r=await fetch('/api/contact',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({from,budget,deadline,message:msg,website:''})});
+   const r=await fetch(process.env.NEXT_PUBLIC_CONTACT_API||'/api/contact',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({from,budget,deadline,message:msg,website:''})});
    if(!r.ok)throw new Error();
    setStatus('sent');setTimeout(onBack,1600);
   }catch{setStatus('error');mailto()}

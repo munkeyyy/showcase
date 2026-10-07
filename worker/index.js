@@ -1,7 +1,9 @@
 // Cloudflare Worker: handles POST /api/contact; every other request is served from the static export (out/).
 // Sends the contact form to CONTACT_TO through Resend's HTTP API (set RESEND_API_KEY and CONTACT_TO as secrets on the Worker).
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const json=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json'}});
+// CORS: the GitHub Pages copy of the site posts here from another origin
+const cors={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type'};
+const json=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json',...cors}});
 
 async function contact(request,env){
  if(!env.RESEND_API_KEY||!env.CONTACT_TO)return json({error:'Mail is not configured'},500);
@@ -30,6 +32,7 @@ async function contact(request,env){
 export default {
  fetch(request,env){
   const {pathname}=new URL(request.url);
+  if(pathname==='/api/contact'&&request.method==='OPTIONS')return new Response(null,{status:204,headers:cors});
   if(pathname==='/api/contact')return request.method==='POST'?contact(request,env):json({error:'Method not allowed'},405);
   return env.ASSETS.fetch(request);
  }

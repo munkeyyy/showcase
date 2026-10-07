@@ -1,3 +1,4 @@
+import {asset} from '../lib/asset';
 /* Site copy and links. Everything a visitor reads lives here. */
 
 export const owner={
@@ -13,10 +14,10 @@ export const owner={
 */
 export type Project={title:string,desc:string,tag:string,stack:string,img:string,video?:string,url?:string,live?:string};
 export const projects:Project[]=[
- {title:'Marketplace OS',desc:'Full-stack operations platform.',tag:'Live product',stack:'Architecture, UI, APIs',img:'/assets/proj-marketplace.png'},
- {title:'Niyaraa Commerce',desc:'Shopify storefront & custom theme.',tag:'Commerce',stack:'Shopify, Liquid, UX',img:'/assets/proj-shopify.png'},
- {title:'WebAR Lab',desc:'Browser-based face tracking prototype.',tag:'Experiment',stack:'MindAR, A-Frame',img:'/assets/proj-ar.png'},
- {title:'DocuFlow',desc:'Document generation + signing workflow.',tag:'Automation',stack:'Node, APIs, Workflows',img:'/assets/proj-docs.png'}
+ {title:'Marketplace OS',desc:'Full-stack operations platform.',tag:'Live product',stack:'Architecture, UI, APIs',img:asset('/assets/proj-marketplace.png')},
+ {title:'Niyaraa Commerce',desc:'Shopify storefront & custom theme.',tag:'Commerce',stack:'Shopify, Liquid, UX',img:asset('/assets/proj-shopify.png')},
+ {title:'WebAR Lab',desc:'Browser-based face tracking prototype.',tag:'Experiment',stack:'MindAR, A-Frame',img:asset('/assets/proj-ar.png')},
+ {title:'DocuFlow',desc:'Document generation + signing workflow.',tag:'Automation',stack:'Node, APIs, Workflows',img:asset('/assets/proj-docs.png')}
 ];
 
 export const steps:[string,string][]=[

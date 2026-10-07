@@ -1,3 +1,4 @@
+import {asset} from '../lib/asset';
 /*
  Hand-drawn nav icons. All share #ink-rough (a light turbulence displacement, defined once in <InkFilter/>)
  so straight SVG strokes read as pen lines. Parts that animate get their own class.
@@ -56,7 +57,7 @@ export function BackArrow(){
  return <svg className="back-arrow" viewBox="0 0 48 40" aria-hidden="true">
   <defs>
    <marker id="backArrowHead" viewBox="0 0 150 168" markerWidth="3.94" markerHeight="4.41" refX="150" refY="88" orient="auto" markerUnits="strokeWidth">
-    <image href="/assets/arrowhead.png" x="0" y="0" width="150" height="168" preserveAspectRatio="xMidYMid meet"/>
+    <image href={asset("/assets/arrowhead.png")} x="0" y="0" width="150" height="168" preserveAspectRatio="xMidYMid meet"/>
    </marker>
    <filter id="backArrowRough" filterUnits="userSpaceOnUse" x="-225" y="-10" width="290" height="60">
     <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7" result="noise"/>

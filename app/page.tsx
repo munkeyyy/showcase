@@ -8,6 +8,7 @@ import Nav,{type View} from './components/Nav';
 import Work from './components/pages/Work';
 import Process from './components/pages/Process';
 import PhonePage,{type PhoneView} from './components/pages/PhonePage';
+import {asset} from './lib/asset';
 import {deskItems} from './data/desk';
 import {owner} from './data/content';
 import {LOOP_PX,useDeskArrangements} from './hooks/useDeskArrangements';
@@ -36,7 +37,7 @@ export default function Page(){
  {/* home only: the document scrolls over this (Lenis); the canvas stays fixed and reads the position */}
  {view==='home'&&<div className="home-spacer" style={{height:`calc(100vh + ${LOOP_PX}px)`}} aria-hidden="true"/>}
  <main ref={canvas} className={`canvas view-${view}${transitioning?' leaving':''}${ready?' is-ready':''}`}>
-   <div className="paper-noise"/>
+   <div className="paper-noise" style={{backgroundImage:`url(${asset("/assets/noise.png")})`}}/>
    <Nav view={view} go={go}/>
    <div className="objects" aria-hidden="true">{deskItems.map((item,i)=><DeskObject key={item.id} order={i} {...item}/>)}</div>
    <section className="stage">

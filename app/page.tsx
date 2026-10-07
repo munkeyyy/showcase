@@ -3,6 +3,7 @@ import {useEffect,useRef,useState} from 'react';
 import DeskObject from './components/DeskObject';
 import Preloader from './components/Preloader';
 import Walker from './components/Walker';
+import ClickBursts from './components/ClickBursts';
 import Nav,{type View} from './components/Nav';
 import Work from './components/pages/Work';
 import Process from './components/pages/Process';
@@ -46,6 +47,7 @@ export default function Page(){
    </section>
    <Preloader onDone={()=>setReady(true)}/>
    <Walker say={!ready?'loading':view==='home'&&!scrolled?'scroll':''} rest={scrolled} arrows={view!=='work'}/>
+   <ClickBursts/>
  </main>
  </>
 }

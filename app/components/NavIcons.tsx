@@ -45,16 +45,24 @@ export function Heart(){
 }
 
 /*
- A loop-de-loop arrow pointing back. On hover it springs out straight (Nav.tsx morphs between these),
- so both shapes use the same commands and the same number of points.
+ The back arrow: a hand-drawn loop-de-loop (a chalky arrowhead image rides the path's end as a marker).
+ On hover Nav.tsx morphs the stroke into a long straight line that shoots out to the left.
 */
 export const BACK_ARROW={
- curled:{shaft:'M43 12 C52 24 39 37 30 30 C23 24.5 32 13.5 37 19.5 C42 26 29 32 19 27.6 C13.5 25.2 9.6 22.6 5.8 20.6',head:'M12.6 14.4 L5.4 20.4 L13.6 25.4'},
- straight:{shaft:'M45 20.4 C41.6 20.2 38.3 20.6 35 20.4 C31.6 20.2 28.4 20.7 25 20.5 C21.6 20.3 18.4 20.6 15 20.4 C11.6 20.2 8.4 20.5 5 20.4',head:'M11.8 14.6 L4.8 20.4 L11.8 26.2'}
+ curled:'M44 13 C55 25 38 40 29 30 C22 22 37 10 40 19 C43 28 25 33 17 27 C11 23 9 22.25 5 20',
+ straight:'M44 20.84 C34.13 20.87 24.34 19.35 14.51 18.44 C2.22 17.3 -10.13 17.1 -22.45 16.39 C-33.58 15.74 -44.67 14.67 -55.8 14.05 C-77.03 12.87 -98.15 17.01 -119.12 20.52 C-129.78 22.3 -140.47 23.93 -151.18 25.4 C-157.64 26.29 -164.17 27.13 -170.69 26.74 C-178.49 26.28 -186.09 24.07 -193.86 23.28 C-199.22 22.74 -204.62 22.87 -210 23'
 };
 export function BackArrow(){
  return <svg className="back-arrow" viewBox="0 0 48 40" aria-hidden="true">
-  <path className="shaft" d={BACK_ARROW.curled.shaft}/>
-  <path className="head" d={BACK_ARROW.curled.head}/>
+  <defs>
+   <marker id="backArrowHead" viewBox="0 0 150 168" markerWidth="3.94" markerHeight="4.41" refX="150" refY="88" orient="auto" markerUnits="strokeWidth">
+    <image href="/assets/arrowhead.png" x="0" y="0" width="150" height="168" preserveAspectRatio="xMidYMid meet"/>
+   </marker>
+   <filter id="backArrowRough" filterUnits="userSpaceOnUse" x="-225" y="-10" width="290" height="60">
+    <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+   </filter>
+  </defs>
+  <path className="shaft" d={BACK_ARROW.curled} markerEnd="url(#backArrowHead)" filter="url(#backArrowRough)"/>
  </svg>;
 }

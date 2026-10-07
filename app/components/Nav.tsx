@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useRef,useState} from 'react';
 import gsap from 'gsap';
+import {MorphSVGPlugin} from 'gsap/MorphSVGPlugin';
 import {useGSAP} from '@gsap/react';
 import {owner} from '../data/content';
 import {Asterisk,BACK_ARROW,BackArrow,Eyes,Hammer,Heart,InkFilter} from './NavIcons';
@@ -117,18 +118,32 @@ export default function Nav({view,go}:{view:View,go:(v:View)=>void}){
  </header>;
 }
 
-// Back: the curl uncoils into a straight arrow with a springy overshoot, and coils up again on leave
+// Back: the curl uncoils into a long straight line on hover (morph + rotate, power3.inOut) and coils up again on leave.
+// On click the arrow squashes against its head and springs back while the pill fades out.
+gsap.registerPlugin(MorphSVGPlugin);
 function BackPill({onClick}:{onClick:()=>void}){
  const btn=useRef<HTMLButtonElement>(null);
- const morph=(to:'curled'|'straight')=>(e:React.PointerEvent)=>{
-  if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  const el=btn.current!,out=to==='straight';
-  const v={duration:out?.75:.45,ease:out?'elastic.out(1,0.45)':'power3.out',overwrite:true};
-  gsap.to(el.querySelector('.shaft'),{attr:{d:BACK_ARROW[to].shaft},...v});
-  gsap.to(el.querySelector('.head'),{attr:{d:BACK_ARROW[to].head},...v});
-  gsap.to(el.querySelector('.back-arrow'),{rotation:out?0:13,duration:out?.5:.35,ease:out?'back.out(2.5)':'power2.out',overwrite:true});
+ const tl=useRef<gsap.core.Timeline>();
+ useGSAP(()=>{
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const el=btn.current!,svg=el.querySelector('.back-arrow'),path=el.querySelector('.shaft');
+  tl.current=gsap.timeline({paused:true})
+   .to(path,{duration:.55,ease:'power3.inOut',morphSVG:{shape:BACK_ARROW.straight}},0)
+   .to(svg,{duration:.55,ease:'power3.inOut',rotation:0},0);
+ },{scope:btn});
+ const hover=(e:React.PointerEvent)=>{if(e.pointerType==='mouse')tl.current?.play()};
+ const leave=(e:React.PointerEvent)=>{if(e.pointerType==='mouse')tl.current?.reverse()};
+ const click=()=>{
+  const arrow=btn.current!.querySelector('.pill-icon');
+  if(arrow&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+   gsap.set(arrow,{transformOrigin:'100% 50%'});
+   gsap.timeline({onComplete:()=>{gsap.set(arrow,{clearProps:'transform,transformOrigin'})}})
+    .to(arrow,{scaleX:.78,duration:.1,ease:'power2.out'})
+    .to(arrow,{scaleX:1,duration:.26,ease:'back.out(2)'});
+  }
+  onClick();
  };
- return <button ref={btn} type="button" className="navpill back" onClick={onClick} onPointerEnter={morph('straight')} onPointerLeave={morph('curled')}>
+ return <button ref={btn} type="button" className="navpill back" onClick={click} onPointerEnter={hover} onPointerLeave={leave}>
   <span className="pill-icon"><BackArrow/></span>Back
  </button>;
 }

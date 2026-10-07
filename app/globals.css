@@ -85,7 +85,7 @@ html.lenis {
     pointer-events: none;
     opacity: .17;
     mix-blend-mode: multiply;
-    background-image: url("/noise.png");
+    background-image: url("/assets/noise.png");
     z-index: 60
 }
 
@@ -254,11 +254,14 @@ html.lenis {
 }
 
 /* resting tilt; the hover spring (Nav.tsx BackPill) straightens it with GSAP */
-.back-arrow {
-    width: 26px;
-    height: 21px;
-    stroke-width: 3.4;
-    transform: rotate(13deg)
+.pill-icon .back-arrow {
+    width: 24px;
+    height: 20px;
+    stroke-width: 4.2;
+    transform-box: fill-box;
+    transform-origin: 50% center;
+    transform: rotate(13deg);
+    filter: none
 }
 
 @keyframes backPillIn {
@@ -542,6 +545,34 @@ html.lenis {
     transform: scaleX(-1)
 }
 
+/* hover the figure (before ever steering him) to learn he's playable */
+.walker-hint {
+    position: absolute;
+    left: calc(100% + 2px);
+    bottom: 6px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: #f5f1e6;
+    color: #6e6a60;
+    font-family: var(--ui);
+    font-size: 11px;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .35s ease;
+    pointer-events: none
+}
+
+@media(hover:hover) {
+    .canvas.is-ready .walker:not(.is-control) .walker-face {
+        pointer-events: auto
+    }
+
+    .walker:not(.is-control):hover .walker-hint {
+        opacity: .75
+    }
+}
+
 .walker-bubble {
     position: absolute;
     left: 30px;
@@ -598,6 +629,30 @@ html.lenis {
     .walker:not(.is-air) .walker-stand {
         opacity: 1
     }
+}
+
+/* click feedback (ClickBursts.tsx): a little ink pop under the pointer, above everything, never in the way */
+.burst-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 120;
+    overflow: hidden;
+    pointer-events: none
+}
+
+.burst-layer svg {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    overflow: visible;
+    fill: none;
+    stroke: #3a3a33;
+    stroke-width: 2.3;
+    stroke-linecap: round;
+    opacity: .8;
+    mix-blend-mode: multiply;
+    filter: url(#ink-rough);
+    pointer-events: none
 }
 
 /* intro: once ready the desk drops in piece by piece, then the headline and nav */
@@ -933,20 +988,6 @@ html.lenis {
     font-family: var(--ios);
     color: #111;
     font-size: clamp(10px, 1.65svh, 14px)
-}
-
-.phone-cracks {
-    position: absolute;
-    left: 3%;
-    top: 16.9%;
-    width: 93.8%;
-    height: 67.3%;
-    pointer-events: none;
-    fill: none;
-    stroke: rgba(112, 114, 108, .32);
-    stroke-width: .6;
-    stroke-linejoin: bevel;
-    vector-effect: non-scaling-stroke
 }
 
 /* screen off: dark glass like the desk photo of the phone; fades out once the phone has landed */

@@ -4,7 +4,7 @@ import {useEffect,useState,type ReactNode} from 'react';
 const clock=()=>new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:false});
 
 /*
- The torn-out photo of a cracked phone with a live screen laid over it. About shows a note on it,
+ The torn-out photo of a phone with a live screen laid over it. About shows a note on it,
  Contact a mail draft. `screen` is the app UI; it fills the area between status bar and phone chin.
 */
 export default function Phone({label,children}:{label:string,children:ReactNode}){
@@ -25,18 +25,6 @@ export default function Phone({label,children}:{label:string,children:ReactNode}
   </div>
   {/* dark glass = screen off. Covers the app while the phone flies between the desk and the centre */}
   <div className="phone-glass" aria-hidden="true"/>
-  <Cracks/>
  </div>;
 }
 
-// a few hairline cracks drawn over the screen so the glass still reads as broken
-function Cracks(){
- return <svg className="phone-cracks" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M8 31 L22 38 L31 36 L44 47 L52 46 L63 58 L71 57 L86 71 L97 74"/>
-  <path d="M31 36 L35 27 L41 22 L44 12"/>
-  <path d="M44 47 L40 58 L43 66 L38 79 L41 92"/>
-  <path d="M63 58 L66 49 L76 44 L90 41"/>
-  <path d="M52 46 L58 37 L57 28"/>
-  <path d="M71 57 L69 68 L75 80 L73 95"/>
- </svg>;
-}

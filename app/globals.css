@@ -1549,3 +1549,10 @@ html.lenis {
         left: 24px
     }
 }
+.mail-status {
+    margin: 0;
+    padding: .5em 1.3em;
+    font-size: .85em;
+    text-align: center;
+    color: #3a3a33
+}

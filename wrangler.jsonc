@@ -1,0 +1,12 @@
+{
+  "name": "kernel-portfoliio",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "keep_vars": true,
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  }
+}

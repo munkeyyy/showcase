@@ -26,7 +26,10 @@ async function contact(request,env){
    html:`<p style="white-space:pre-wrap">${esc(message)}</p><hr><p>Budget: ${esc(budget)}<br>Deadline: ${esc(deadline)}<br>Reply to: ${esc(from)}</p>`
   })
  });
- return res.ok?json({ok:true}):json({error:'Could not send'},502);
+ if(res.ok)return json({ok:true});
+ // pass Resend's own reason along (e.g. invalid key, recipient not allowed) so it can be fixed from the browser's network tab
+ const why=await res.json().catch(()=>({}));
+ return json({error:'Could not send',reason:why.message||`Resend returned ${res.status}`},502);
 }
 
 export default {

@@ -24,8 +24,8 @@ jobs:
         env:
           # project sites live at https://<user>.github.io/<repo>/
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
-          # optional: the deployed Cloudflare Worker URL (repo variable) so the contact form can send mail from here
-          NEXT_PUBLIC_CONTACT_API: ${{ vars.CONTACT_API }}
+          # the Cloudflare Worker that sends the contact form email
+          NEXT_PUBLIC_CONTACT_API: https://kernel-portfoliio.alcoholicmonk3.workers.dev/api/contact
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
